@@ -10,7 +10,7 @@ namespace TicTacToe
     {
         static char[] board = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
         static char currentPlayer = 'X';
-
+        static Random random = new Random();
         static void Main(string[] args)
         {
             bool gameOver = false;
@@ -19,20 +19,55 @@ namespace TicTacToe
             {
                 Console.Clear();
                 DrawBoard();
-
-                Console.WriteLine("Player {0}'s turn. Enter a number (1-9):", currentPlayer);
-                int move;
-                bool validInput = Int32.TryParse(Console.ReadLine(), out move);
-
-                if (validInput && IsValidMove(move))
+                
+                if (currentPlayer == 'X')
                 {
-                    board[move - 1] = currentPlayer;
+                    Console.WriteLine("Player {0}'s turn. Enter a number (1-9):", currentPlayer);
+                    int move;
+                    bool validInput = Int32.TryParse(Console.ReadLine(), out move);
+
+                    if (validInput && IsValidMove(move))
+                    {
+                        board[move - 1] = currentPlayer;
+
+                        if (IsWinner())
+                        {
+                            Console.Clear();
+                            DrawBoard();
+                            Console.WriteLine("Player X wins!");
+                            gameOver = true;
+                        }
+                        else if (IsBoardFull())
+                        {
+                            Console.Clear();
+                            DrawBoard();
+                            Console.WriteLine("It's a tie!");
+                            gameOver = true;
+                        }
+                        else
+                        {
+                            currentPlayer = 'O';
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid move. Please try again.");
+                        Console.ReadLine();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Player O's turn (computer's turn):");
+                    System.Threading.Thread.Sleep(1000); // Delay for a more natural gameplay feel
+
+                    int computerMove = GetComputerMove();
+                    board[computerMove] = currentPlayer;
 
                     if (IsWinner())
                     {
                         Console.Clear();
                         DrawBoard();
-                        Console.WriteLine("Player {0} wins!", currentPlayer);
+                        Console.WriteLine("Player O (computer) wins!");
                         gameOver = true;
                     }
                     else if (IsBoardFull())
@@ -44,14 +79,10 @@ namespace TicTacToe
                     }
                     else
                     {
-                        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+                        currentPlayer = 'X';
                     }
                 }
-                else
-                {
-                    Console.WriteLine("Invalid move. Please try again.");
-                    Console.ReadLine();
-                }
+
             }
 
             Console.WriteLine("Press any key to exit.");
@@ -115,6 +146,17 @@ namespace TicTacToe
                     return false;
             }
             return true;
+        }
+        static int GetComputerMove()
+        {
+            int move = random.Next(0, 9);
+
+            while (!IsValidMove(move + 1))
+            {
+                move = random.Next(0, 9);
+            }
+
+            return move;
         }
     }
 }
