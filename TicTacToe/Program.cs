@@ -21,12 +21,13 @@ namespace TicTacToe
                 DrawBoard();
 
                 Console.WriteLine("Player {0}'s turn. Enter a number (1-9):", currentPlayer);
-                int move = Convert.ToInt32(Console.ReadLine());
+                int move;
+                bool validInput = Int32.TryParse(Console.ReadLine(), out move);
 
-                if (IsValidMove(move))
+                if (validInput && IsValidMove(move))
                 {
                     board[move - 1] = currentPlayer;
-                    //kiem tra game da ket thuc hay chua
+
                     if (IsWinner())
                     {
                         Console.Clear();
@@ -34,7 +35,6 @@ namespace TicTacToe
                         Console.WriteLine("Player {0} wins!", currentPlayer);
                         gameOver = true;
                     }
-                    //kiem tra bang game da co ky tu nao hay chua
                     else if (IsBoardFull())
                     {
                         Console.Clear();
