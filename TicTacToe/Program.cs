@@ -26,7 +26,7 @@ namespace TicTacToe
                 if (IsValidMove(move))
                 {
                     board[move - 1] = currentPlayer;
-
+                    //kiem tra game da ket thuc hay chua
                     if (IsWinner())
                     {
                         Console.Clear();
@@ -34,6 +34,7 @@ namespace TicTacToe
                         Console.WriteLine("Player {0} wins!", currentPlayer);
                         gameOver = true;
                     }
+                    //kiem tra bang game da co ky tu nao hay chua
                     else if (IsBoardFull())
                     {
                         Console.Clear();
@@ -56,7 +57,7 @@ namespace TicTacToe
             Console.WriteLine("Press any key to exit.");
             Console.ReadLine();
         }
-
+        //ve bang tro choi
         static void DrawBoard()
         {
             Console.WriteLine(" {0} | {1} | {2} ", board[0], board[1], board[2]);
@@ -65,7 +66,7 @@ namespace TicTacToe
             Console.WriteLine("---+---+---");
             Console.WriteLine(" {0} | {1} | {2} ", board[6], board[7], board[8]);
         }
-
+        //Kiem tra bang da co ky tu hay chua
         static bool IsValidMove(int move)
         {
             if (move < 1 || move > 9)
@@ -76,7 +77,10 @@ namespace TicTacToe
 
             return true;
         }
-
+        // cac hieu kien ket thuc ket thuc tro choi
+        /// <summary>
+        /// neu ma 3 chu giong nhau thang hang thi game se ket thuc. 
+        /// </summary>
         static bool IsWinner()
         {
             // Kiểm tra các hàng ngang
